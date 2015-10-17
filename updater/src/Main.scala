@@ -11,7 +11,7 @@ object Main extends App {
 
 	val results = MutableList[(String, Double)]()
 	for(c <- cl90.classes.values)
-		results += (c.name -> compare(c, node1, toFieldList))
+		results += (c.name -> compare(c, node1, toMethodList))
 
 	results.sortWith(_._2 > _._2).foreach(i => println(i._1 + ": " + i._2))
 
@@ -27,7 +27,8 @@ object Main extends App {
 	}
 
 	def fixObjNames(str: String) = str.replaceAll("L[a-z][a-z]?;", "O")
-	def toMethodList(cl: ClassNode) = cl.methods.toList.map(m => m.access + fixObjNames(m.desc))
+	def toMethodList(cl: ClassNode) =
+		cl.methods.toList.filter(m => (m.access & 8) == 0).map(m => m.access + fixObjNames(m.desc))
 	def toFieldList(cl: ClassNode) = cl.fields.toList.map(f => f.access + fixObjNames(f.desc))
 
 	def all(loader: Loader) = {

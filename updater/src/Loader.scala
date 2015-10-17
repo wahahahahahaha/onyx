@@ -2,6 +2,8 @@ import collection.mutable.MutableList
 import collection.JavaConversions._
 import util.control.Exception
 import java.util.jar.JarFile
+import java.lang.reflect.Modifier
+import java.lang.StringBuilder
 import jdk.internal.org.objectweb.asm.ClassReader
 import jdk.internal.org.objectweb.asm.tree._
 
@@ -72,6 +74,22 @@ class Loader(val rev: Int){
 		}
 	}
 
+	private def hasFakeParam(method: MethodNode): Boolean = {
+		val arr = method.instructions.toArray
+		for(i <- 3 until arr.length; if arr(i).getOpcode == 0xbb){
+			val tdesc = arr(i).asInstanceOf[TypeInsnNode].desc
+			if(tdesc.contains("IllegalState") && arr(i - 3).getOpcode == 0x15)
+				return true
+		}
+		false
+	}
+
+	private def removeFakeParams(methods: Iterable[MethodNode]){
+		for(m <- methods; if hasFakeParam(m)){
+			m.desc = new StringBuilder(m.desc).deleteCharAt(m.desc.indexOf(')') - 1).toString
+		}
+	}
+
 	private def loadFields() = {
 		val fields = collection.mutable.Map[String, FieldNode]()
 		for(m <- methods.values; i <- m.instructions.iterator; if isField(i.getOpcode)){
@@ -95,9 +113,10 @@ class Loader(val rev: Int){
 		val methods = collection.mutable.Map[String, MethodNode]()
 		for(c <- classes.values; m <- c.methods; if m.name.length > 2; if m.name != "<init>")
 			addMethods(methods, c.name + " " + m.name + " " + m.desc)
-
 		for(c <- classes.values; m <- c.methods.toList; if !methods.values.contains(m))
 			c.methods.remove(m)
+
+		removeFakeParams(methods.values)
 
 		log("Kept " + methods.size + " methods.")
 		methods.toMap
