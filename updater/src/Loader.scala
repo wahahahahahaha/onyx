@@ -1,4 +1,3 @@
-import collection.mutable.MutableList
 import collection.JavaConversions._
 import util.control.Exception
 import java.util.jar.JarFile
@@ -6,9 +5,7 @@ import java.lang.StringBuilder
 import jdk.internal.org.objectweb.asm.ClassReader
 import jdk.internal.org.objectweb.asm.tree._
 
-class Loader(val rev: Int,
-	val hooks: MutableList[(String, String)] = MutableList()){
-
+class Loader(val rev: Int){
 	val classes = loadClasses()
 	val methods = loadMethods()
 	val fields = loadFields()

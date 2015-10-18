@@ -1,33 +1,33 @@
+import collection.mutable.MutableList
 import collection.JavaConversions._
 import java.lang.reflect.Modifier
 import jdk.internal.org.objectweb.asm.tree._
 
 class Updater(val rrev: Int, val trev: Int){
-	val reference = new Loader(rrev, LogParser(rrev))
+	val hooks_ref = LogParser(rrev)
+	val hooks_tar = MutableList[(String, String)]()
+
+	val reference = new Loader(rrev)
 	val target = new Loader(trev)
 
-	for(h <- reference.hooks; if !h._1.contains(".")){
-		val best = findBestMatch(h._1)
+	for(h <- hooks_ref; if !h._1.contains(".")){
+		val best = findBestClass(h._1)
 		println(best._1 + " (" + best._2 + ")  =>  " + h._2)
 	}
 
-	def findBestMatch(str: String) = {
-		if(str.contains(".")){
-			("", 0)
-		} else {
-			val item = reference.classes(str)
-			var (best, highest) = ("", 0.0)
-			for(c <- target.classes.values){
-				val f = compare(item, c, toFieldList)
-				val m = compare(item, c, toMethodList)
-				val avg = (f + m) / 2
-				if(avg > highest){
-					highest = avg
-					best = c.name
-				}
+	def findBestClass(str: String) = {
+		val item = reference.classes(str)
+		var (best, highest) = ("", 0.0)
+		for(c <- target.classes.values){
+			val f = compare(item, c, toFieldList)
+			val m = compare(item, c, toMethodList)
+			val avg = (f + m) / 2
+			if(avg > highest){
+				highest = avg
+				best = c.name
 			}
-			(best, highest)
 		}
+		(best, highest)
 	}
 
 	def compare(one: ClassNode, two: ClassNode, func: (ClassNode) => List[String]) = {
@@ -52,5 +52,18 @@ class Updater(val rrev: Int, val trev: Int){
 		cl.methods.toList.filter(m => !Modifier.isStatic(m.access)).map(m => m.access + m.desc)
 	def toFieldList(cl: ClassNode) =
 		cl.fields.toList.filter(f => !Modifier.isStatic(f.access)).map(f => f.access + f.desc)
+}
 
+class DynamicMap {
+	var incs, decs = 0
+	val map = collection.mutable.Map[String, Int]()
+
+	def inc(key: String){ incs += 1; change(key, 1)  }
+	def dec(key: String){ decs += 1; change(key, -1) }
+	private def change(key: String, amt: Int){
+		try
+			map(key) += amt
+		catch { case e: Exception =>
+			map += (key -> amt) }
+	}
 }
