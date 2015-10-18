@@ -17,10 +17,12 @@ class Updater(val rrev: Int, val trev: Int){
 
 	def findBestClass(str: String) = {
 		val item = reference.classes(str)
+		val (fitem, mitem) = (fieldStrings(item), methodStrings(item))
+
 		var (best, highest) = ("", 0.0)
 		for(c <- target.classes.values){
-			val f = compare(item, c, toFieldList)
-			val m = compare(item, c, toMethodList)
+			val f = compare(fitem, fieldStrings(c))
+			val m = compare(mitem, methodStrings(c))
 			val avg = (f + m) / 2
 			if(avg > highest){
 				highest = avg
@@ -30,10 +32,10 @@ class Updater(val rrev: Int, val trev: Int){
 		(best, highest)
 	}
 
-	def compare(one: ClassNode, two: ClassNode, func: (ClassNode) => List[String]) = {
+	def compare(one: List[String], two: List[String]) = {
 		val count = new DynamicMap
-		func(one).foreach(f => count inc fixDescriptor(f))
-		func(two).foreach(f => count dec fixDescriptor(f))
+		one.foreach(f => count inc fixDescriptor(f))
+		two.foreach(f => count dec fixDescriptor(f))
 
 		val total = if(count.incs > count.decs) count.incs else count.decs
 		val amt = count.map.values.foldLeft(0)(Math.abs(_) + Math.abs(_))
@@ -42,15 +44,14 @@ class Updater(val rrev: Int, val trev: Int){
 	}
 
 	def fixDescriptor(str: String) = {
-		/* temp */
 		"L([a-z][a-z]?);".r.replaceAllIn(str, m => {
 			"O"
 		})
 	}
 
-	def toMethodList(cl: ClassNode) =
+	def methodStrings(cl: ClassNode) =
 		cl.methods.toList.filter(m => !Modifier.isStatic(m.access)).map(m => m.access + m.desc)
-	def toFieldList(cl: ClassNode) =
+	def fieldStrings(cl: ClassNode) =
 		cl.fields.toList.filter(f => !Modifier.isStatic(f.access)).map(f => f.access + f.desc)
 }
 
@@ -58,7 +59,7 @@ class DynamicMap {
 	var incs, decs = 0
 	val map = collection.mutable.Map[String, Int]()
 
-	def inc(key: String){ incs += 1; change(key, 1)  }
+	def inc(key: String){ incs += 1; change(key,  1) }
 	def dec(key: String){ decs += 1; change(key, -1) }
 	private def change(key: String, amt: Int){
 		try
