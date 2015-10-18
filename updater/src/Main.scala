@@ -1,57 +1,5 @@
-import collection.mutable._
-import collection.JavaConversions._
-import java.lang.reflect.Modifier
-import jdk.internal.org.objectweb.asm.tree._
-
 object Main extends App {
-	val cl94 = new Loader(94)
-	val cl90 = new Loader(90)
 
-	val node = cl94.classes("ay")
-
-	val results = MutableList[(String, Double)]()
-	for(c <- cl90.classes.values){
-		val f = compare(c, node, toFieldList)
-		val m = compare(c, node, toMethodList)
-		results += (c.name -> (f + m) / 2)
-	}
-
-	results.sortWith(_._2 > _._2).foreach(i => println(i._1 + ": " + i._2))
-
-	def compare(one: ClassNode, two: ClassNode, func: (ClassNode) => List[String]) = {
-		val count = new DynamicMap
-		func(one).foreach(f => count.inc(f))
-		func(two).foreach(f => count.dec(f))
-
-		val total = if(count.incs > count.decs) count.incs else count.decs
-		val amt = count.map.values.foldLeft(0)(Math.abs(_) + Math.abs(_))
-		val percent = (total - amt * 0.5) / total
-		percent
-	}
-
-	def fixObjNames(str: String) = str.replaceAll("L[a-z][a-z]?;", "O")
-	def toMethodList(cl: ClassNode) =
-		cl.methods.toList.filter(m => !Modifier.isStatic(m.access)).map(m => m.access + fixObjNames(m.desc))
-	def toFieldList(cl: ClassNode) =
-		cl.fields.toList.filter(f => !Modifier.isStatic(f.access)).map(f => f.access + fixObjNames(f.desc))
-
-	def all(loader: Loader) = {
-		val result = Map[String, Map[String, Int]]()
-		for(m <- loader.methods; i <- m._2.instructions.iterator;
-		if i.getOpcode == 0xb4 || i.getOpcode == 0xb5){
-			val field = i.asInstanceOf[FieldInsnNode]
-			val name = field.owner + "." + field.name
-			if(loader.fields.contains(name)){
-
-				if(!result.contains(name))
-					result += (name -> Map[String, Int]())
-				if(!result(name).contains(m._1))
-					result(name) += (m._1 -> 0)
-
-				result(name)(m._1) += 1
-			}
-		}
-		result
-	}
+	val updater = new Updater(94, 93)
 
 }
