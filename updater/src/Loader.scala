@@ -2,6 +2,7 @@ import collection.JavaConversions._
 import util.control.Exception
 import java.util.jar.JarFile
 import java.lang.StringBuilder
+import java.lang.reflect.Modifier
 import jdk.internal.org.objectweb.asm.ClassReader
 import jdk.internal.org.objectweb.asm.tree._
 
@@ -46,14 +47,37 @@ class Loader(val rev: Int){
 		findSubs(clname) ++ findSupers(clname)
 	}
 
-	private def hasFakeParam(method: MethodNode): Boolean = {
-		val arr = method.instructions.toArray
-		for(i <- 3 until arr.length; if arr(i).getOpcode == 0xbb){
-			val tdesc = arr(i).asInstanceOf[TypeInsnNode].desc
-			if(tdesc.contains("IllegalState") && arr(i - 3).getOpcode == 0x15)
-				return true
+	private def countParams(desc: String) = {
+		var (count, index) = (0, 1)
+		while(desc(index) != ')'){
+			desc(index) match {
+				case 'L' => { index += desc.substring(index).indexOf(';') }
+				case ';'|'Z'|'B'|'C'|'S'|'I'|'J'|'F'|'D' => { count += 1; index += 1; }
+				case _ => { index += 1 }
+			}
 		}
-		false
+		count
+	}
+
+	private def hasFakeParam(method: MethodNode): Boolean = {
+		val count = countParams(method.desc)
+		val static = Modifier.isStatic(method.access)
+		var max = 0
+
+		val arr = method.instructions.toArray
+		for(i <- 3 until arr.length){
+			val opcode = arr(i).getOpcode
+			if(opcode == 0xbb){
+				val tdesc = arr(i).asInstanceOf[TypeInsnNode].desc
+				if(tdesc.contains("IllegalState") && arr(i - 3).getOpcode == 0x15)
+					return true
+			} else if(isLoad(opcode)){
+				val index = arr(i).asInstanceOf[VarInsnNode].`var` + (if(static) 1 else 0)
+				if(index <= count && index > max)
+					max = index
+			}
+		}
+		max < count
 	}
 
 	private def findMethods(full: String) = {
@@ -62,12 +86,9 @@ class Loader(val rev: Int){
 		val result = collection.mutable.Map[String, MethodNode]()
 
 		for(c <- related){
-			Exception.ignoring(classOf[NoSuchElementException]) {
-				val m = findMethod(c.name + " " + name + " " + desc).get
-				if(hasFakeParam(m))
-					m.desc = new StringBuilder(m.desc).deleteCharAt(m.desc.indexOf(')') - 1).toString
-				result += ((c.name + " " + name + " " + m.desc) -> m)
-			}
+			val temp = c.name + " " + name + " " + desc
+			val method = findMethod(temp)
+			if(method != None) result += (temp -> method.get)
 		}
 		result.toMap
 	}
@@ -109,6 +130,10 @@ class Loader(val rev: Int){
 			addMethods(methods, c.name + " " + m.name + " " + m.desc)
 		for(c <- classes.values; m <- c.methods.toList; if !methods.values.contains(m))
 			c.methods.remove(m)
+		for(m <- methods.values; if hasFakeParam(m)){
+			m.desc = new StringBuilder(m.desc).deleteCharAt(m.desc.indexOf(')') - 1).toString
+		}
+
 
 		log("Kept " + methods.size + " methods.")
 		methods.toMap
@@ -128,6 +153,7 @@ class Loader(val rev: Int){
 	}
 
 	def log(str: String) = println("(" + rev + ") " + str)
+	def isLoad(code: Int) = (code >= 0x15 && code <= 0x19)
 	def isField(code: Int) = (code >= 0xb2 && code <= 0xb5)
 	def isInvoke(code: Int) = (code >= 0xb6 && code <= 0xba)
 }
