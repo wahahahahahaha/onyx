@@ -81,12 +81,6 @@ class Loader(val rev: Int){
 		false
 	}
 
-	private def removeFakeParams(methods: Iterable[MethodNode]){
-		for(m <- methods; if hasFakeParam(m)){
-			m.desc = new StringBuilder(m.desc).deleteCharAt(m.desc.indexOf(')') - 1).toString
-		}
-	}
-
 	private def loadFields() = {
 		val fields = collection.mutable.Map[String, FieldNode]()
 		for(m <- methods.values; i <- m.instructions.iterator; if isField(i.getOpcode)){
@@ -112,8 +106,8 @@ class Loader(val rev: Int){
 			addMethods(methods, c.name + " " + m.name + " " + m.desc)
 		for(c <- classes.values; m <- c.methods.toList; if !methods.values.contains(m))
 			c.methods.remove(m)
-
-		removeFakeParams(methods.values)
+		for(m <- methods.values; if hasFakeParam(m))
+			m.desc = new StringBuilder(m.desc).deleteCharAt(m.desc.indexOf(')') - 1).toString
 
 		log("Kept " + methods.size + " methods.")
 		methods.toMap

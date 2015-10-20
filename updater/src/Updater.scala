@@ -1,29 +1,33 @@
-import collection.mutable.MutableList
+import collection.mutable.LinkedHashMap
 import collection.JavaConversions._
 import java.lang.reflect.Modifier
 import jdk.internal.org.objectweb.asm.tree._
 
 class Updater(val rrev: Int, val trev: Int){
 	val hooks_ref = LogParser(rrev)
-	val hooks_tar = MutableList[(String, String)]()
+	val hooks_tar = LinkedHashMap[String, String]()
 
 	val reference = new Loader(rrev)
 	val target = new Loader(trev)
 
 	for(h <- hooks_ref; if !h._1.contains(".")){
 		val best = findBestClass(h._1)
-		println(best._1 + " (" + best._2 + ")  =>  " + h._2)
+		val res = (best._1 -> h._2)
+		hooks_tar += res
+		printf("%s =>  %s (%.2f)\n", h._2.padTo(20, ' '), best._1.padTo(2, ' '), best._2)
 	}
 
 	def findBestClass(str: String) = {
 		val item = reference.classes(str)
 		val (fitem, mitem) = (fieldStrings(item), methodStrings(item))
+		val sup = getDeobName(item.superName, 0)
 
 		var (best, highest) = ("", 0.0)
 		for(c <- target.classes.values){
+			val s = if(sup == getDeobName(c.superName, 1)) 1 else 0
 			val f = compare(fitem, fieldStrings(c))
 			val m = compare(mitem, methodStrings(c))
-			val avg = (f + m) / 2
+			val avg = (f + m + s) / 3
 			if(avg > highest){
 				highest = avg
 				best = c.name
@@ -34,8 +38,8 @@ class Updater(val rrev: Int, val trev: Int){
 
 	def compare(one: List[String], two: List[String]) = {
 		val count = new DynamicMap
-		one.foreach(f => count inc fixDescriptor(f))
-		two.foreach(f => count dec fixDescriptor(f))
+		one.foreach(f => count inc fixDescriptor(f, 0))
+		two.foreach(f => count dec fixDescriptor(f, 1))
 
 		val total = if(count.incs > count.decs) count.incs else count.decs
 		val amt = count.map.values.foldLeft(0)(Math.abs(_) + Math.abs(_))
@@ -43,9 +47,21 @@ class Updater(val rrev: Int, val trev: Int){
 		percent
 	}
 
-	def fixDescriptor(str: String) = {
+	def getDeobName(str: String, which: Int) = {
+		try {
+			val name = (if(which == 0) hooks_ref else hooks_tar)(str)
+			if((if(which == 0) hooks_tar else hooks_ref).values.contains(name))
+				name
+			else "O"
+		} catch {
+			case e: NoSuchElementException => "O"
+		}
+	}
+
+	def fixDescriptor(str: String, which: Int) = {
 		"L([a-z][a-z]?);".r.replaceAllIn(str, m => {
-			"O"
+			val res = getDeobName(m.group(1), which)
+			"|" + res + "|"
 		})
 	}
 
