@@ -46,15 +46,28 @@ class Loader(val rev: Int){
 		findSubs(clname) ++ findSupers(clname)
 	}
 
+	private def hasFakeParam(method: MethodNode): Boolean = {
+		val arr = method.instructions.toArray
+		for(i <- 3 until arr.length; if arr(i).getOpcode == 0xbb){
+			val tdesc = arr(i).asInstanceOf[TypeInsnNode].desc
+			if(tdesc.contains("IllegalState") && arr(i - 3).getOpcode == 0x15)
+				return true
+		}
+		false
+	}
+
 	private def findMethods(full: String) = {
 		val Array(owner, name, desc) = full.split(" ")
 		val related = findRelated(owner)
 		val result = collection.mutable.Map[String, MethodNode]()
 
 		for(c <- related){
-			val temp = c.name + " " + name + " " + desc
-			val method = findMethod(temp)
-			if(method != None) result += (temp -> method.get)
+			Exception.ignoring(classOf[NoSuchElementException]) {
+				val m = findMethod(c.name + " " + name + " " + desc).get
+				if(hasFakeParam(m))
+					m.desc = new StringBuilder(m.desc).deleteCharAt(m.desc.indexOf(')') - 1).toString
+				result += ((c.name + " " + name + " " + m.desc) -> m)
+			}
 		}
 		result.toMap
 	}
@@ -69,16 +82,6 @@ class Loader(val rev: Int){
 			if(!methods.contains(desc))
 				addMethods(methods, desc)
 		}
-	}
-
-	private def hasFakeParam(method: MethodNode): Boolean = {
-		val arr = method.instructions.toArray
-		for(i <- 3 until arr.length; if arr(i).getOpcode == 0xbb){
-			val tdesc = arr(i).asInstanceOf[TypeInsnNode].desc
-			if(tdesc.contains("IllegalState") && arr(i - 3).getOpcode == 0x15)
-				return true
-		}
-		false
 	}
 
 	private def loadFields() = {
@@ -106,8 +109,6 @@ class Loader(val rev: Int){
 			addMethods(methods, c.name + " " + m.name + " " + m.desc)
 		for(c <- classes.values; m <- c.methods.toList; if !methods.values.contains(m))
 			c.methods.remove(m)
-		for(m <- methods.values; if hasFakeParam(m))
-			m.desc = new StringBuilder(m.desc).deleteCharAt(m.desc.indexOf(')') - 1).toString
 
 		log("Kept " + methods.size + " methods.")
 		methods.toMap

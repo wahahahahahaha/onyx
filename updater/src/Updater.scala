@@ -12,9 +12,8 @@ class Updater(val rrev: Int, val trev: Int){
 
 	for(h <- hooks_ref; if !h._1.contains(".")){
 		val best = findBestClass(h._1)
-		val res = (best._1 -> h._2)
-		hooks_tar += res
-		printf("%s =>  %s (%.2f)\n", h._2.padTo(20, ' '), best._1.padTo(2, ' '), best._2)
+		hooks_tar += (best._1 -> h._2)
+		printf("%s =>  %s (%.2f)\n", h._2.padTo(26, ' '), best._1.padTo(2, ' '), best._2)
 	}
 
 	def findBestClass(str: String) = {
@@ -50,9 +49,7 @@ class Updater(val rrev: Int, val trev: Int){
 	def getDeobName(str: String, which: Int) = {
 		try {
 			val name = (if(which == 0) hooks_ref else hooks_tar)(str)
-			if((if(which == 0) hooks_tar else hooks_ref).values.contains(name))
-				name
-			else "O"
+			(if(which == 0) hooks_tar else hooks_ref).find(h => h._2 == name).get._2
 		} catch {
 			case e: NoSuchElementException => "O"
 		}
@@ -60,8 +57,7 @@ class Updater(val rrev: Int, val trev: Int){
 
 	def fixDescriptor(str: String, which: Int) = {
 		"L([a-z][a-z]?);".r.replaceAllIn(str, m => {
-			val res = getDeobName(m.group(1), which)
-			"|" + res + "|"
+			"| " + getDeobName(m.group(1), which) + "|"
 		})
 	}
 
