@@ -1,4 +1,6 @@
 package onyx
+
+import onyx.updater.Updater
 import java.awt.Canvas
 import java.awt.event.MouseListener
 import java.applet.Applet
@@ -11,9 +13,10 @@ class Client(force: Boolean = false) {
 	Util.download(url + "/gamepack.jar", force)
 
 	val loader = new URLClassLoader(Array(new URL("file:gamepack.jar")))
-	val reflect = new Reflection(loader)
-	val applet = loader.loadClass("client").newInstance().asInstanceOf[Applet]
+	val hooks = Updater(loader)
+	Reflect.init(hooks)
 
+	val applet = loader.loadClass("client").newInstance().asInstanceOf[Applet]
 	applet.setStub(new Stub(url, Util.getSource(url)))
 	applet.init()
 	applet.start()
