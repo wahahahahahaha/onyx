@@ -1,0 +1,271 @@
+lolthxDex
+
+▸ Class gp identified as Node (extends Object)
+	▴ Field     gp.ew(Lgp;)                             identified as Node-Previous
+	▴ Field     gp.ez(Lgp;)                             identified as Node-Next
+	▴ Field     gp.ek(J)                                identified as Node-Uid
+▸ Found 3/3 targets
+
+▸ Class gr identified as CacheableNode (extends Node)
+▸ Found 0/0 targets
+
+▸ Class gm identified as HashTable (extends Object)
+	▴ Field     gm.v([Lgp;)                             identified as HashTable-Buckets
+	▴ Field     gm.i(I)                                 identified as HashTable-Size
+▸ Found 2/2 targets
+
+▸ Class gy identified as LinkedList (extends Object)
+	▴ Field     gy.i(Lgp;)                              identified as LinkedList-Tail
+	▴ Field     gy.v(Lgp;)                              identified as LinkedList-Head
+▸ Found 2/2 targets
+
+▸ Class i identified as ScriptEvent (extends Node)
+	▴ Field     i.i([Ljava/lang/Object;)                identified as ScriptEvent-Args
+	▴ Field     i.d(Ljava/lang/String;)                 identified as ScriptEvent-Name
+▸ Found 2/2 targets
+
+▸ Class eh identified as Canvas (extends Canvas)
+▸ Found 0/0 targets
+
+▸ Class ck identified as Renderable (extends CacheableNode)
+	▴ Field     ck.cb(I) * 1513659429                   identified as Renderable-ModelHeight
+	▴ Callback  ck.ai(IIIIIIIII)V after [4]             identified as ModelCache-Accept
+▸ Found 2/2 targets
+
+▸ Class do identified as Model (extends Renderable)
+	▴ Field     do.s([I)                                identified as Model-VerticesX
+	▴ Field     do.p([I)                                identified as Model-VerticesY
+	▴ Field     do.r([I)                                identified as Model-VerticesZ
+	▴ Field     do.d([I)                                identified as Model-IndicesX
+	▴ Field     do.n([I)                                identified as Model-IndicesY
+	▴ Field     do.z([I)                                identified as Model-IndicesZ
+▸ Found 6/6 targets
+
+▸ Class cb identified as Region (extends Object)
+	▴ Field     cb.s([[[Lcr;)                           identified as Region-Tiles
+	▴ Field     cb.k([Lce;)                             identified as Region-Interactables
+	▴ Method    cb.k(IIIILck;Lck;IIII)V                 identified as Region-SetBoundary
+	▴ Method    cb.b(IIIIIIIILck;IZII)Z                 identified as Region-AddEntity
+	▴ Method    cb.p(IIIILck;II)V                       identified as Region-SetTileDecoration
+	▴ Method    cb.d(IIIILck;Lck;IIIIII)V               identified as Region-SetBoundaryDecoration
+	▴ Method    cb.r(IIIILck;ILck;Lck;)V                identified as Region-SetGroundItemPile
+▸ Found 7/7 targets
+
+▸ Class co identified as Boundary (extends Object)
+	▴ Field     co.r(I) * -229686567                    identified as Boundary-ID
+	▴ Field     co.k(I) * -292972075                    identified as Boundary-Flags
+	▴ Field     co.f(I) * 1027567379                    identified as Boundary-Y
+	▴ Field     co.i(I) * -1492732529                   identified as Boundary-Plane
+	▴ Field     co.s(Lck;)                              identified as Boundary-Renderable
+	▴ Field     co.a(I) * 2011057263                    identified as Boundary-Orientation
+	▴ Field     co.v(I) * 1635973217                    identified as Boundary-X
+▸ Found 7/7 targets
+
+▸ Class af identified as ObjectDef (extends CacheableNode)
+	▴ Field     af.z(Ljava/lang/String;)                identified as ObjectDef-Name
+	▴ Field     af.al([Ljava/lang/String;)              identified as ObjectDef-Actions
+	▴ Field     af.b([S)                                identified as ObjectDef-Colors
+	▴ Method    af.n(I)Laf; {oP Soln.: -267381963}      identified as ObjectDef-Transform
+▸ Found 4/4 targets
+
+▸ Class ce identified as Entity (extends Object)
+	▴ Field     ce.a(Lck;)                              identified as Entity-Renderable
+	▴ Field     ce.i(I) * 1576477777                    identified as Entity-Plane
+	▴ Field     ce.p(I) * -2010824363                   identified as Entity-X
+	▴ Field     ce.c(I) * -199949401                    identified as Entity-ID
+	▴ Field     ce.b(I) * -1776200095                   identified as Entity-Flags
+	▴ Field     ce.f(I) * -1836357227                   identified as Entity-WorldX
+	▴ Field     ce.h(I) * 1795239801                    identified as Entity-WorldY
+	▴ Field     ce.s(I) * 136504757                     identified as Entity-Orientation
+	▴ Field     ce.k(I) * -228206313                    identified as Entity-Y
+	▴ Field     ce.r(I) * 1617706217                    identified as Entity-OffsetX
+	▴ Field     ce.v(I) * -870985879                    identified as Entity-Height
+	▴ Field     ce.d(I) * -375482433                    identified as Entity-OffsetY
+▸ Found 12/12 targets
+
+▸ Class cp identified as TileDecoration (extends Object)
+	▴ Field     cp.h(Lck;)                              identified as TileDecoration-Renderable
+	▴ Field     cp.v(I) * 2008420337                    identified as TileDecoration-X
+	▴ Field     cp.f(I) * 518695491                     identified as TileDecoration-Y
+	▴ Field     cp.a(I) * -122082525                    identified as TileDecoration-ID
+	▴ Field     cp.s(I) * -1934351309                   identified as TileDecoration-Flags
+	▴ Field     cp.i(I) * -184885367                    identified as TileDecoration-Plane
+▸ Found 6/6 targets
+
+▸ Class cx identified as BoundaryDecoration (extends Object)
+	▴ Field     cx.f(I) * 401430787                     identified as BoundaryDecoration-Y
+	▴ Field     cx.n(I) * 999256755                     identified as BoundaryDecoration-Flags
+	▴ Field     cx.v(I) * 153414505                     identified as BoundaryDecoration-X
+	▴ Field     cx.i(I) * -1375419569                   identified as BoundaryDecoration-Plane
+	▴ Field     cx.r(Lck;)                              identified as BoundaryDecoration-Renderable
+	▴ Field     cx.s(I) * 1670053049                    identified as BoundaryDecoration-Orientation
+	▴ Field     cx.d(I) * 2001099791                    identified as BoundaryDecoration-ID
+▸ Found 7/7 targets
+
+▸ Class cj identified as GroundItemPile (extends Object)
+	▴ Field     cj.p(I) * 712828251                     identified as GroundItemPile-ID
+	▴ Field     cj.f(I) * -1390404275                   identified as GroundItemPile-Y
+	▴ Field     cj.i(I) * 271792703                     identified as GroundItemPile-Plane
+	▴ Field     cj.r(I) * 1809907381                    identified as GroundItemPile-Height
+	▴ Field     cj.v(I) * 900438221                     identified as GroundItemPile-X
+▸ Found 5/5 targets
+
+▸ Class al identified as GroundItem (extends Renderable)
+	▴ Field     al.i(I) * 108977289                     identified as GroundItem-ID
+	▴ Field     al.v(I) * 175501403                     identified as GroundItem-Quantity
+▸ Found 2/2 targets
+
+▸ Class cr identified as Tile (extends Node)
+	▴ Field     cr.p(Lco;)                              identified as Tile-Boundary
+	▴ Field     cr.z([Lce;)                             identified as Tile-Entities
+	▴ Field     cr.k(Lcp;)                              identified as Tile-Decoration
+	▴ Field     cr.r(Lcx;)                              identified as Tile-BoundaryDecoration
+	▴ Field     cr.d(Lcj;)                              identified as Tile-GroundItemPile
+▸ Found 5/5 targets
+
+▸ Class ai identified as Character (extends Renderable)
+	▴ Field     ai.ay(Ljava/lang/String;)               identified as Character-SpokenText
+	▴ Field     ai.as(I) * -1606214617                  identified as Character-CombatCycle
+	▴ Field     client.hy(I) * 1814923349               identified as Character-QueueSize
+	▴ Field     ai.av(I) * 498015577                    identified as Character-Health
+	▴ Field     ai.ao(I) * -287435141                   identified as Character-MaxHealth
+	▴ Field     ai.ad(I) * 1889871245                   identified as Character-InteractionIndex
+	▴ Field     ai.bt(I) * -504444531                   identified as Character-Orientation
+	▴ Field     ai.bp(I) * 1249186839                   identified as Character-Animation
+	▴ Field     ai.q(I) * 1938631351                    identified as Character-X
+	▴ Field     ai.ak(I) * -236469231                   identified as Character-Y
+	▴ Field     ai.cw([I)                               identified as Character-PathX
+	▴ Field     ai.ch([I)                               identified as Character-PathY
+▸ Found 12/12 targets
+
+▸ Class fz identified as PlayerDef (extends Object)
+	▴ Field     fz.f(Z)                                 identified as PlayerDef-Female
+▸ Found 1/1 targets
+
+▸ Class f identified as Player (extends Character)
+	▴ Field     f.v(Lfz;)                               identified as Player-Definition
+	▴ Field     f.i(Ljava/lang/String;)                 identified as Player-Name
+▸ Found 3/3 targets
+
+▸ Class aj identified as NpcDef (extends CacheableNode)
+	▴ Field     aj.s(Ljava/lang/String;)                identified as NpcDef-Name
+	▴ Field     aj.m([Ljava/lang/String;)               identified as NpcDef-Actions
+	▴ Field     aj.a(I) * 708216051                     identified as NpcDef-ID
+	▴ Field     aj.u(I) * -364047929                    identified as NpcDef-CombatLevel
+▸ Found 4/4 targets
+
+▸ Class aq identified as Npc (extends Character)
+	▴ Field     aq.i(Laj;)                              identified as Npc-Definition
+▸ Found 1/1 targets
+
+▸ Class ad identified as ItemDef (extends CacheableNode)
+	▴ Field     ad.ap([Ljava/lang/String;)              identified as ItemDef-GroundActions
+	▴ Field     ad.al([Ljava/lang/String;)              identified as ItemDef-Actions
+	▴ Field     ad.z(I) * -816782679                    identified as ItemDef-ID
+	▴ Field     ad.b(Ljava/lang/String;)                identified as ItemDef-Name
+▸ Found 4/4 targets
+
+▸ Class fb identified as Widget (extends Node)
+	▴ Field     fb.cb(Lfb;)                             identified as Widget-Parent
+	▴ Field     fb.eq([Lfb;)                            identified as Widget-Children
+	▴ Field     fb.dr([I)                               identified as Widget-ItemIds
+	▴ Field     fb.dx([I)                               identified as Widget-Quantities
+	▴ Field     fb.ei(I) * -14526297                    identified as Widget-BoundsIndex
+	▴ Field     fb.w(I) * 1998077167                    identified as Widget-Type
+	▴ Field     fb.ai(I) * -750283069                   identified as Widget-TextColor
+	▴ Field     fb.ag(I) * -836573789                   identified as Widget-TextAlpha
+	▴ Field     fb.aa(I) * 729402483                    identified as Widget-TextureID
+	▴ Field     fb.bl(I) * -2145410993                  identified as Widget-FontID
+	▴ Field     fb.av(I) * -923572215                   identified as Widget-BorderThickness
+	▴ Field     fb.ao(I) * -87330313                    identified as Widget-ShadowColor
+	▴ Field     fb.ad(Z)                                identified as Widget-VerticalFlip
+	▴ Field     fb.bi(Z)                                identified as Widget-HorizontalFlip
+	▴ Field     fb.c(I) * -862136129                    identified as Widget-ID
+	▴ Field     fb.cc(Ljava/lang/String;)               identified as Widget-SelectedAction
+	▴ Field     fb.q(I) * 1864745131                    identified as Widget-X
+	▴ Field     fb.ak(I) * -1565393939                  identified as Widget-Y
+	▴ Field     fb.ap(I) * -2076568025                  identified as Widget-Width
+	▴ Field     fb.al(I) * -1755226997                  identified as Widget-Height
+	▴ Field     fb.ae(Z)                                identified as Widget-Hidden
+	▴ Field     fb.au(I) * -1948693671                  identified as Widget-ParentID
+	▴ Field     fb.ax(I) * -1060015707                  identified as Widget-InsetX
+	▴ Field     fb.aq(I) * 112045755                    identified as Widget-InsetY
+	▴ Field     fb.ba(Ljava/lang/String;)               identified as Widget-Text
+	▴ Field     fb.az(I) * -36412821                    identified as Widget-ScrollWidth
+	▴ Field     fb.ac(I) * 766029035                    identified as Widget-ScrollHeight
+	▴ Field     fb.bg(I) * 539861315                    identified as Widget-Zoom
+	▴ Field     fb.br(I) * 560443313                    identified as Widget-RotationX
+	▴ Field     fb.bh(I) * 1141175481                   identified as Widget-RotationY
+	▴ Field     fb.bk(I) * 1815793437                   identified as Widget-RotationZ
+	▴ Field     fb.ed(I) * 1608564533                   identified as Widget-ItemID
+	▴ Field     fb.en(I) * -695999199                   identified as Widget-ItemQuantity
+	▴ Field     fb.b(I) * 1693090553                    identified as Widget-Index
+	▴ Field     fb.ck([Ljava/lang/String;)              identified as Widget-Actions
+	▴ Field     fb.cd(Ljava/lang/String;)               identified as Widget-Name
+▸ Found 36/36 targets
+
+▸ Class h identified as WidgetNode (extends Node)
+	▴ Field     h.i(I) * -358995073                     identified as WidgetNode-ID
+▸ Found 1/1 targets
+
+▸ Class q identified as World (extends Object)
+	▴ Field     q.n(I) * 1413686943                     identified as World-ID
+	▴ Field     q.z(I) * 1607166349                     identified as World-Mask
+	▴ Field     q.b(Ljava/lang/String;)                 identified as World-Domain
+	▴ Field     q.w(Ljava/lang/String;)                 identified as World-Activity
+	▴ Field     q.g(I) * -859334745                     identified as World-Location
+	▴ Field     q.c(I) * 917291125                      identified as World-Population
+▸ Found 6/6 targets
+
+▸ Class dq identified as CollisionMap (extends Object)
+	▴ Field     dq.ai([[I)                              identified as CollisionMap-Flags
+▸ Found 1/1 targets
+
+▸ Class client identified as Client (extends ev)
+	▴ Field     client.gb([Lf;)                         identified as Client-LoadedPlayers
+	▴ Field     client.cm([Laq;)                        identified as Client-LoadedNpcs
+	▴ Field     client.ha([[[Lgy;)                      identified as Client-GroundItems
+	▴ Field     d.hr(Lf;)                               identified as Client-LocalPlayer
+	▴ Field     ai.dj(Lcb;)                             identified as Client-Region
+	▴ Field     client.w([Ldq;)                         identified as Client-CollisionMaps
+	▴ Field     fa.fl(I) * 1736524133                   identified as Client-CameraX
+	▴ Field     dq.fm(I) * -637488189                   identified as Client-CameraY
+	▴ Field     ac.ff(I) * -629785153                   identified as Client-CameraZ
+	▴ Field     ev.fv(I) * -1592076759                  identified as Client-CameraYaw
+	▴ Field     s.fo(I) * -30081311                     identified as Client-CameraPitch
+	▴ Field     ae.qs(Ljava/awt/Canvas;)                identified as Client-Canvas
+	▴ Field     fb.i([[Lfb;)                            identified as Client-Widgets
+	▴ Field     fb.v([Z)                                identified as Client-ValidWidgets
+	▴ Field     client.lf([I)                           identified as Client-WidgetPositionsX
+	▴ Field     client.le([I)                           identified as Client-WidgetPositionsY
+	▴ Field     client.lx([I)                           identified as Client-WidgetWidths
+	▴ Field     client.lg([I)                           identified as Client-WidgetHeights
+	▴ Field     client.ik(Lgm;)                         identified as Client-WidgetNodes
+	▴ Field     s.v([[[B)                               identified as Client-TileSettings
+	▴ Field     s.i([[[I)                               identified as Client-TileHeights
+	▴ Field     client.l(I) * -1619111323               identified as Client-GameState
+	▴ Field     client.m(I) * -1534823697               identified as Client-GameCycle
+	▴ Field     client.ox(I) * -1748693073              identified as Client-ViewportScale
+	▴ Field     client.ok(I) * 1968603227               identified as Client-ViewportHeight
+	▴ Field     client.og(I) * 215114979                identified as Client-ViewportWidth
+	▴ Field     client.ag(I) * 1122861501               identified as Client-MinimapScale
+	▴ Field     client.ag(I) * 1122861501               identified as Client-MinimapAngle
+	▴ Field     v.hf(Z)                                 identified as Client-MenuOpen
+	▴ Field     au.ho(I) * -459739989                   identified as Client-MenuX
+	▴ Field     gc.he(I) * 323214279                    identified as Client-MenuY
+	▴ Field     p.hj(I) * -1647572689                   identified as Client-MenuWidth
+	▴ Field     v.hf(I) * -239106319                    identified as Client-MenuHeight
+	▴ Field     dn.gg(I) * 447359903                    identified as Client-Elevation
+	▴ Field     fi.cv(I) * 1045964135                   identified as Client-BaseX
+	▴ Field     aj.do(I) * 1160360799                   identified as Client-BaseY
+	▴ Field     fa.f([I)                                identified as Client-Configurations
+	▴ Field     client.hi([I)                           identified as Client-Levels
+	▴ Field     client.hv([I)                           identified as Client-RealLevels
+	▴ Field     client.hw([I)                           identified as Client-Experiences
+	▴ Field     q.s(I) * -1038824951                    identified as Client-WorldCount
+	▴ Field     q.a([Lq;)                               identified as Client-Worlds
+	▴ Method    h.z(Lq;I)V {oP Soln.: 2094630516}       identified as Client-HopWorld
+	▴ Method    bo.i(II)Laf; {oP Soln.: -671952731}     identified as Client-LoadObjectDefinition
+	▴ Method    ad.d(IB)Lad; {oP Soln.: 0}              identified as Client-LoadItemDefinition
+	▴ Method    ab.n(IB)V {oP Soln.: 2}                 identified as Client-SetGameState
+	▴ Method    et.bs(B)Z                               identified as Client-GcQuery
